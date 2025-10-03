@@ -18,24 +18,17 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20
-          cache: 'yarn'
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Prepare Yarn
-        run: corepack prepare yarn@npm:10.5.0 --activate
-
+          cache: 'npm'
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Run tests
-        run: yarn test
+        run: npm test
 
   build-and-deploy:
     needs: test
-    runs-on: self-hosted  # Changed to self-hosted
+    runs-on: self-hosted
     
     steps:
       - name: Checkout repo
@@ -45,20 +38,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20
-          cache: 'yarn'
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Prepare Yarn
-        run: corepack prepare yarn@npm:10.5.0 --activate
-
+          cache: 'npm'
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Build T3 App
-        run: yarn build
+        run: npm run build
 
       - name: Build Docker image
         run: docker build -t t3-trpc-app:latest .
